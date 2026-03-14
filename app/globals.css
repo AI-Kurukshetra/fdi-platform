@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(99, 102, 241, 0.16), transparent 26%),
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 24%),
+    linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  color: #f8fafc;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.36);
+}
+
+@layer base {
+  * {
+    @apply border-line;
+  }
+
+  body,
+  button,
+  input,
+  select,
+  textarea {
+    @apply font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-slate-100;
+  }
+
+  p {
+    @apply text-slate-400;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    @apply outline-none transition duration-200;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply ring-2 ring-accent/60 ring-offset-2 ring-offset-slate-950;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 9999px;
+    border: 2px solid #0f172a;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-panel border border-slate-800 bg-slate-950/70 shadow-panel backdrop-blur;
+  }
+
+  .panel-muted {
+    @apply rounded-panel border border-slate-800/80 bg-slate-900/70 shadow-panel backdrop-blur;
+  }
+
+  .surface-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.34em] text-slate-500;
+  }
+
+  .gradient-ring {
+    @apply bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 p-px;
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center rounded-xl border border-indigo-400/30 bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-glow hover:brightness-110;
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-4 py-2.5 text-sm font-semibold text-slate-100 hover:border-slate-600 hover:bg-slate-800/80;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10;
+  }
+
+  .page-grid {
+    @apply space-y-6;
+  }
+
+  .metric-value {
+    @apply text-3xl font-semibold text-slate-100 lg:text-4xl;
+  }
+
+  .page-transition {
+    animation: page-fade-in 280ms ease-out both;
+  }
+}
