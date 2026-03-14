@@ -1,6 +1,12 @@
-import type { InsightRow, TransactionRow } from "@/lib/supabase/types";
+import type { TransactionRow } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils/format";
 import { detectRecurringPayments, getCategorySpending, getMonthlySpending } from "@/lib/analytics/spending";
+
+export interface DashboardInsight {
+  content: string;
+  created_at: string;
+  type: string;
+}
 
 export interface GeneratedInsight {
   content: string;
@@ -72,9 +78,9 @@ export function generateInsightsFromTransactions(transactions: TransactionRow[])
 }
 
 export function normalizeInsights(
-  storedInsights: InsightRow[],
+  storedInsights: DashboardInsight[],
   fallbackTransactions: TransactionRow[]
-): Array<Pick<InsightRow, "content" | "created_at" | "type">> {
+): DashboardInsight[] {
   if (storedInsights.length) {
     return storedInsights;
   }

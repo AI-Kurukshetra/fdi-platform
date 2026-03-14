@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { signInAction, signUpAction } from "@/app/actions/auth";
+import FormButton from "@/components/ui/FormButton";
 import { createClient } from "@/lib/supabase/server";
 
 interface LoginPageProps {
@@ -97,18 +98,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </label>
 
             <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-              <button
+              <FormButton
                 formAction={signInAction}
-                className="button-primary w-full"
-              >
-                Sign in
-              </button>
-              <button
+                className="w-full"
+                label="Sign in"
+                pendingLabel="Signing in..."
+              />
+              <FormButton
                 formAction={signUpAction}
-                className="button-secondary w-full"
-              >
-                Create account
-              </button>
+                className="w-full"
+                label="Create account"
+                pendingLabel="Creating account..."
+                variant="secondary"
+              />
             </div>
           </form>
 

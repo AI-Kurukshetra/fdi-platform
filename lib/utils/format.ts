@@ -11,18 +11,31 @@ export function formatCurrency(value: number) {
 }
 
 export function formatDate(value: string) {
+  const parsed = new Date(value);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
   return new Intl.DateTimeFormat("en-IN", {
     month: "short",
     day: "numeric",
     year: "numeric"
-  }).format(new Date(value));
+  }).format(parsed);
 }
 
 export function formatMonthLabel(value: string) {
+  const normalizedValue = /^\d{4}-\d{2}$/.test(value) ? `${value}-01` : value;
+  const parsed = new Date(`${normalizedValue}T00:00:00`);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
   return new Intl.DateTimeFormat("en-IN", {
     month: "short",
     year: "2-digit"
-  }).format(new Date(`${value}-01T00:00:00`));
+  }).format(parsed);
 }
 
 export function compactNumber(value: number) {
