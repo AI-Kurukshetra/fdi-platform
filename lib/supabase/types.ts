@@ -137,24 +137,30 @@ export interface Database {
       };
       insights: {
         Row: {
-          content: string;
           created_at: string;
           id: string;
-          type: string;
+          month: string;
+          top_category: string;
+          total_expense: number;
+          total_income: number;
           user_id: string;
         };
         Insert: {
-          content: string;
           created_at?: string;
           id?: string;
-          type: string;
+          month: string;
+          top_category: string;
+          total_expense?: number;
+          total_income?: number;
           user_id: string;
         };
         Update: {
-          content?: string;
           created_at?: string;
           id?: string;
-          type?: string;
+          month?: string;
+          top_category?: string;
+          total_expense?: number;
+          total_income?: number;
           user_id?: string;
         };
         Relationships: [];

@@ -23,6 +23,12 @@ html {
   }
 }
 
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(200%);
+  }
+}
+
 body {
   min-height: 100vh;
   background:

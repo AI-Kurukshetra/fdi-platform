@@ -29,21 +29,30 @@ function isLocalDevelopmentAuthEnabled() {
 
 function getAuthMessage(errorMessage: string) {
   const normalized = errorMessage.toLowerCase();
+  const isLocal = process.env.NODE_ENV !== "production";
 
   if (normalized.includes("email not confirmed")) {
-    return "Your account exists, but the email is not confirmed yet. In local development you can press Create account again to auto-confirm it.";
+    return isLocal
+      ? "Your account exists, but the email is not confirmed yet. In local development you can press Create account again to auto-confirm it."
+      : "Your email address has not been confirmed yet. Please check your inbox (and spam folder) for a confirmation link.";
   }
 
   if (normalized.includes("rate limit") || normalized.includes("only request this after")) {
-    return "Supabase is rate-limiting confirmation emails right now. In local development, press Create account again and the app will finish setup without waiting for email delivery.";
+    return isLocal
+      ? "Supabase is rate-limiting confirmation emails right now. In local development, press Create account again and the app will finish setup without waiting for email delivery."
+      : "Too many requests. Please wait a few minutes before trying again.";
   }
 
   if (normalized.includes("invalid login credentials")) {
-    return "Invalid login credentials. If this is your first time here, use Create account first so the local development flow can provision the user.";
+    return isLocal
+      ? "Invalid login credentials. If this is your first time here, use Create account first so the local development flow can provision the user."
+      : "Invalid email or password. If you just signed up, please confirm your email first before signing in.";
   }
 
   if (normalized.includes("already been registered")) {
-    return "That email is already registered. In local development, Create account will also repair unconfirmed accounts and sign you in.";
+    return isLocal
+      ? "That email is already registered. In local development, Create account will also repair unconfirmed accounts and sign you in."
+      : "That email is already registered. Please sign in instead.";
   }
 
   return errorMessage;

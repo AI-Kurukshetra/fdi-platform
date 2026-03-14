@@ -72,11 +72,6 @@ export default function SidebarNavigation() {
             })}
           </nav>
         </div>
-
-        <div className="relative border-t border-slate-800 px-6 py-5">
-          <p className="surface-label">Performance</p>
-          <p className="mt-2 text-sm leading-6 text-slate-400">Server-rendered pages, lazy-loaded charts, and lightweight motion tuned for quick interaction.</p>
-        </div>
       </aside>
 
       <div className="panel-muted sticky top-4 z-20 mb-6 overflow-x-auto p-2 lg:hidden">

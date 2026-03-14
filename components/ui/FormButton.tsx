@@ -1,36 +1,33 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
-import { classNames } from "@/lib/utils/format";
+import type { ButtonHTMLAttributes } from "react";
+import ButtonLoader from "@/components/ui/button-loader";
 
 interface FormButtonProps {
   className?: string;
+  formAction?: string | ((formData: FormData) => void | Promise<void>);
   label: string;
   pendingLabel: string;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   variant?: "ghost" | "primary" | "secondary";
 }
 
 export default function FormButton({
   className,
+  formAction,
   label,
   pendingLabel,
+  type,
   variant = "primary"
 }: FormButtonProps) {
-  const { pending } = useFormStatus();
-
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className={classNames(
-        "inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-60",
-        variant === "primary" && "bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 text-white shadow-glow hover:brightness-110",
-        variant === "secondary" && "border border-slate-700 bg-slate-900/80 text-slate-100 hover:border-slate-600 hover:bg-slate-800/80",
-        variant === "ghost" && "border border-slate-700 bg-slate-950/60 text-slate-200 hover:border-slate-600 hover:bg-slate-900/80",
-        className
-      )}
-    >
-      {pending ? pendingLabel : label}
-    </button>
+    <ButtonLoader
+      className={className}
+      formAction={formAction}
+      label={label}
+      pendingLabel={pendingLabel}
+      type={type}
+      variant={variant}
+    />
   );
 }

@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
+import type { DashboardInsight } from "@/lib/analytics/insights";
 import { createClient } from "@/lib/supabase/server";
-import type { CategoryRow, InsightRow, TransactionRow } from "@/lib/supabase/types";
+import type { CategoryRow, TransactionRow } from "@/lib/supabase/types";
+import { formatCurrency, formatMonthLabel } from "@/lib/utils/format";
 
 type TransactionFilters = {
   category?: string;
@@ -20,6 +22,17 @@ type RawTransactionRow = {
   is_recurring: boolean | null;
   merchant_name: string | null;
   type: string | null;
+  user_id: string;
+};
+
+type RawInsightRow = {
+  categories: { name: string } | null;
+  created_at: string;
+  id: string;
+  month: string;
+  top_category: string;
+  total_expense: number;
+  total_income: number;
   user_id: string;
 };
 
@@ -122,7 +135,11 @@ export async function getCategories() {
 
 export async function getInsightsForUser(userId: string, limit?: number) {
   const supabase = createClient();
-  let query = supabase.from("insights").select("*").eq("user_id", userId).order("created_at", { ascending: false });
+  let query = supabase
+    .from("insights")
+    .select("id, user_id, month, total_income, total_expense, top_category, created_at, categories(name)")
+    .eq("user_id", userId)
+    .order("month", { ascending: false });
 
   if (limit) {
     query = query.limit(limit);
@@ -134,7 +151,17 @@ export async function getInsightsForUser(userId: string, limit?: number) {
     throw new Error(error.message);
   }
 
-  return (data ?? []) as InsightRow[];
+  return ((data ?? []) as RawInsightRow[]).map((insight): DashboardInsight => {
+    const categoryName = insight.categories?.name ?? "Uncategorized";
+    const income = Number(insight.total_income ?? 0);
+    const expense = Number(insight.total_expense ?? 0);
+
+    return {
+      type: `${categoryName} spotlight`,
+      content: `${formatMonthLabel(insight.month)} closed with ${formatCurrency(expense)} in expenses and ${formatCurrency(income)} in income. Top category: ${categoryName}.`,
+      created_at: insight.created_at
+    };
+  });
 }
 
 export async function getPrimaryAccountBalance(userId: string) {
